@@ -36,10 +36,10 @@ function App() {
             <div className="searchbar"></div>
           </div>
         </div>
-        <div className="community-cards">
+        <div className="community-cards bg-black">
           <h1>Top Communities</h1>
           <div className="cards">
-            <div className="card">
+            <div className="card" onClick={() => (window.location.href = '/Community')}>
               <div
                 className="top"
                 style={{ backgroundImage: `url(${cardimage})` }}

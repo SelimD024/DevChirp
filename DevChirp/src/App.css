@@ -5,7 +5,7 @@
 * {
   padding: 0;
   margin: 0;
-  font-family: 'Inter';
+  font-family: "Inter";
 }
 
 .header {
@@ -14,11 +14,24 @@
 }
 
 .header .top {
-  padding: 20px 20px 0px 20px;
+  padding: 20px 20px 11px 20px;
   display: grid;
   align-items: center;
   grid-template-columns: auto 1fr auto;
   gap: 74px;
+}
+
+.Community .header * {
+  color: black;
+}
+
+.Community .header .top {
+  border-bottom: 1px solid #dfe7ef;
+  gap: 8px;
+}
+
+.Community .header .top .Hamburger {
+  filter: brightness(0%);
 }
 
 .header .navigation ul {
@@ -29,7 +42,22 @@
 }
 
 .header .middle {
-  padding: 40px 67px 18px 67px;
+  padding: 50px 67px 18px 67px;
+}
+
+.Community .header .middle {
+  padding: 0px;
+  display: flex;
+}
+
+.Community .header .middle .Navigation {
+  padding: 16px 86px;
+  border-bottom: 3px solid #dfe7ef;
+}
+
+.Community .header .middle .active {
+  border-bottom: 3px solid black;
+  border-radius: 1px;
 }
 
 .header .bottom {
@@ -50,20 +78,28 @@
 }
 
 .community-cards {
-  padding: 24px 67px;
+  padding: 24px 10px;
 }
 
 .community-cards .cards {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-top: 8px;
+  justify-content: space-between;
 }
 
 .community-cards .cards .card {
-  width: 100%;
+  width: 160px;
   box-shadow: 0px 3px 6px rgba(110, 116, 134, 0.24);
   border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.community-cards .cards .card:hover {
+  cursor: pointer;
+  box-shadow: 0px 12px 18px rgba(110, 116, 134, 0.24);
+  scale: 1.1;
 }
 
 .community-cards .cards .card .top {
@@ -88,4 +124,30 @@
   transform: translateX(-50%);
 }
 
+.Forum{
+  height: 100%;
+  padding: 17px 49px;
+  background-color: #8b8f936a;
+}
 
+@media (min-width: 568px) {
+  .community-cards {
+    padding: 24px 47px;
+  }
+
+  .community-cards .cards {
+    justify-content: flex-start !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .community-cards {
+    padding: 24px 67px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .community-cards {
+    padding: 24px 67px;
+  }
+}
