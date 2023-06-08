@@ -8,12 +8,18 @@
   font-family: "Inter";
 }
 
-.header {
-  color: white;
-  position: relative;
+body{
+  height: 100vh;
+  background-color: #DFE7EF;
 }
 
-.header .top {
+.main-header {
+  color: white;
+  position: relative;
+  background-color: white;
+}
+
+.main-header .top {
   padding: 20px 20px 11px 20px;
   display: grid;
   align-items: center;
@@ -21,46 +27,48 @@
   gap: 74px;
 }
 
-.Community .header * {
+.Community .main-header * {
   color: black;
 }
 
-.Community .header .top {
+.Community .main-header .top {
   border-bottom: 1px solid #dfe7ef;
   gap: 8px;
 }
 
-.Community .header .top .Hamburger {
+.Community .main-header .top .Hamburger {
   filter: brightness(0%);
 }
 
-.header .navigation ul {
+.main-header .navigation ul {
   display: flex;
   color: white;
   gap: 30px;
   list-style: none;
 }
 
-.header .middle {
+.main-header .middle {
   padding: 50px 67px 18px 67px;
 }
 
-.Community .header .middle {
+.Community .main-header .middle {
   padding: 0px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
 }
 
-.Community .header .middle .Navigation {
-  padding: 16px 86px;
+.Community .main-header .middle .Navigation {
+  padding: 21px 5%;
   border-bottom: 3px solid #dfe7ef;
 }
 
-.Community .header .middle .active {
+.Community .main-header .middle .active {
   border-bottom: 3px solid black;
   border-radius: 1px;
 }
 
-.header .bottom {
+.main-header .bottom {
   padding: 0px 67px;
   background-image: linear-gradient(
     to bottom,
@@ -79,6 +87,7 @@
 
 .community-cards {
   padding: 24px 10px;
+  background-color: white;
 }
 
 .community-cards .cards {
@@ -126,9 +135,26 @@
 
 .Forum{
   height: 100%;
-  padding: 17px 49px;
-  background-color: #8b8f936a;
+  padding: 17px 5%;
 }
+
+.Forum .card{
+  border-radius: 8px;
+  background-color: white;
+  padding: 16px;
+}
+
+.Forum .card .header{
+  display: grid;
+  grid-template-columns: auto 1fr 70%;
+  gap: 8px;
+}
+
+.Forum .card .body{
+  padding: 10px 5%;
+}
+
+
 
 @media (min-width: 568px) {
   .community-cards {
@@ -138,6 +164,11 @@
   .community-cards .cards {
     justify-content: flex-start !important;
   }
+  
+.Community .main-header .middle {
+  padding: 0px;
+  display: flex;
+  
 }
 
 @media (min-width: 768px) {

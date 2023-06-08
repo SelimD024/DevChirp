@@ -13,9 +13,9 @@ function App() {
 
   return (
     <>
-      <main className="">
+      <main className="index">
         <div
-          className="header"
+          className="main-header"
           style={{ backgroundImage: `url(${headerbackground})` }}
         >
           <div className="top">
