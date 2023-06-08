@@ -1,11 +1,27 @@
 import { useState } from "react";
 import Navbar1 from "./components/navbar1";
-
+import CommunityCard from "./components/CommunityCard";
 import "./App.css";
 import cardimage from "./assets/cardimage.png";
 import Clogo from "./assets/Clogo.png";
 import javascriptimage from "./assets/javascript.png";
 import javalogo from "./assets/javascriptlogo.png";
+
+const communityData = [
+  {
+    name: "C#",
+    members: "23,600",
+    backgroundImage: cardimage,
+    logo: Clogo,
+  },
+  {
+    name: "Javascript",
+    members: "23,600",
+    backgroundImage: javascriptimage,
+    logo: javalogo,
+  },
+  // Add more community objects as needed
+];
 
 function App() {
   const [count, setCount] = useState(0);
@@ -17,76 +33,18 @@ function App() {
         <div className="community-cards bg-black">
           <h1>Top Communities</h1>
           <div className="cards">
-            <div
-              className="card"
-              onClick={() => (window.location.href = "/Community")}
-            >
-              <div
-                className="top"
-                style={{ backgroundImage: `url(${cardimage})` }}
-              >
-                <div
-                  className="card-icon"
-                  style={{ backgroundImage: `url(${Clogo})` }}
-                ></div>
-              </div>
-              <div className="bottom">
-                <h2>C#</h2>
-                <p>23.600 members</p>
-              </div>
-            </div>
-            <div className="card">
-              <div
-                className="top"
-                style={{ backgroundImage: `url(${javascriptimage})` }}
-              >
-                <div
-                  className="card-icon"
-                  style={{ backgroundImage: `url(${javalogo})` }}
-                ></div>
-              </div>
-              <div className="bottom">
-                <h2>Javascript</h2>
-                <p>23.600 members</p>
-              </div>
-            </div>
+            {communityData.map((community) => (
+              <CommunityCard
+                key={community.name}
+                name={community.name}
+                members={community.members}
+                backgroundImage={community.backgroundImage}
+                logo={community.logo}
+              />
+            ))}
           </div>
         </div>
-        <div className="community-cards">
-          <h1>Design Communities</h1>
-          <div className="cards">
-            <div className="card">
-              <div
-                className="top"
-                style={{ backgroundImage: `url(${cardimage})` }}
-              >
-                <div
-                  className="card-icon"
-                  style={{ backgroundImage: `url(${Clogo})` }}
-                ></div>
-              </div>
-              <div className="bottom">
-                <h2>C#</h2>
-                <p>23.600 members</p>
-              </div>
-            </div>
-            <div className="card">
-              <div
-                className="top"
-                style={{ backgroundImage: `url(${cardimage})` }}
-              >
-                <div
-                  className="card-icon"
-                  style={{ backgroundImage: `url(${Clogo})` }}
-                ></div>
-              </div>
-              <div className="bottom">
-                <h2>C#</h2>
-                <p>23.600 members</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* More community sections */}
       </main>
     </>
   );

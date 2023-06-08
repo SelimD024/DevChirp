@@ -1,9 +1,7 @@
 import { useState } from "react";
 import Navbar from "./components/navbar2";
-import burger from "./assets/burger.svg";
 import avatar from "./assets/avatar.svg";
-import Navlogo from "./assets/navigation.svg";
-import Hash from "./assets/hash.svg";
+
 import Bookmark from "./assets/bookmark.svg";
 import Like from "./assets/Like.svg";
 import Comment from "./assets/Chat.svg";
@@ -12,7 +10,7 @@ function Community() {
   return (
     <>
       <main className="Community">
-      <Navbar />
+        <Navbar />
         <section className="Forum">
           <div className="card">
             <div className="header">

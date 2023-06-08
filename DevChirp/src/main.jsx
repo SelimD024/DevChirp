@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App.jsx";
-import Community from "./Community.jsx";
+import Community from "./javascriptcommunity.jsx";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(

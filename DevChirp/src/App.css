@@ -92,7 +92,6 @@ body {
 
 .community-cards .cards {
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
   margin-top: 8px;
   justify-content: space-between;
@@ -172,6 +171,7 @@ body {
   }
 
   .community-cards .cards {
+    flex-wrap: wrap;
     justify-content: flex-start !important;
   }
 
