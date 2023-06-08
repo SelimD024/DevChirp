@@ -8,9 +8,9 @@
   font-family: "Inter";
 }
 
-body{
+body {
   height: 100vh;
-  background-color: #DFE7EF;
+  background-color: #dfe7ef;
 }
 
 .main-header {
@@ -24,7 +24,7 @@ body{
   display: grid;
   align-items: center;
   grid-template-columns: auto 1fr auto;
-  gap: 74px;
+  gap: 5%;
 }
 
 .Community .main-header * {
@@ -133,28 +133,38 @@ body{
   transform: translateX(-50%);
 }
 
-.Forum{
+.Forum {
   height: 100%;
   padding: 17px 5%;
+  gap: 15px;
+  display: grid;
 }
 
-.Forum .card{
+.Forum .card {
   border-radius: 8px;
   background-color: white;
   padding: 16px;
 }
 
-.Forum .card .header{
+.Forum .card .header {
   display: grid;
   grid-template-columns: auto 1fr 70%;
   gap: 8px;
 }
 
-.Forum .card .body{
+.Forum .card .body {
   padding: 10px 5%;
 }
 
+.Forum .card .footer {
+  padding: 10px 5%;
+  display: flex;
+  gap: 2%;
+}
 
+.Forum .card .footer .inner {
+  display: flex;
+}
 
 @media (min-width: 568px) {
   .community-cards {
@@ -164,11 +174,11 @@ body{
   .community-cards .cards {
     justify-content: flex-start !important;
   }
-  
-.Community .main-header .middle {
-  padding: 0px;
-  display: flex;
-  
+
+  .Community .main-header .middle {
+    padding: 0px;
+    display: flex;
+  }
 }
 
 @media (min-width: 768px) {

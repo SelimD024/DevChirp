@@ -1,8 +1,7 @@
 import { useState } from "react";
-import burger from "./assets/burger.svg";
-import avatar from "./assets/avatar.svg";
+import Navbar1 from "./components/navbar1";
+
 import "./App.css";
-import headerbackground from "./assets/headerbackground.png";
 import cardimage from "./assets/cardimage.png";
 import Clogo from "./assets/Clogo.png";
 import javascriptimage from "./assets/javascript.png";
@@ -14,32 +13,14 @@ function App() {
   return (
     <>
       <main className="index">
-        <div
-          className="main-header"
-          style={{ backgroundImage: `url(${headerbackground})` }}
-        >
-          <div className="top">
-            <img src={burger} alt="React Logo" />
-            <div className="navigation">
-              <ul>
-                <li>Home</li>
-                <li>Topics</li>
-              </ul>
-            </div>
-            <img src={avatar} alt="React Logo" />
-          </div>
-          <div className="middle">
-            <h1>Hi, Stijn</h1>
-            <p>Find community by using topics or products</p>
-          </div>
-          <div className="bottom">
-            <div className="searchbar"></div>
-          </div>
-        </div>
+        <Navbar1 />
         <div className="community-cards bg-black">
           <h1>Top Communities</h1>
           <div className="cards">
-            <div className="card" onClick={() => (window.location.href = '/Community')}>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/Community")}
+            >
               <div
                 className="top"
                 style={{ backgroundImage: `url(${cardimage})` }}
