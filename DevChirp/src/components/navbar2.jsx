@@ -4,7 +4,7 @@ import avatar from "../assets/avatar.svg";
 import Navlogo from "../assets/navigation.svg";
 import Hash from "../assets/hash.svg";
 
-function Navbar() {
+function Navbar({ pageName }) {
   return (
     <div className="main-header">
       <div className="top">
@@ -12,17 +12,17 @@ function Navbar() {
         <div className="navigation">
           <ul>
             <li>
-              <b>JavaScript</b>
+              <b>{pageName}</b>
             </li>
           </ul>
         </div>
         <img src={avatar} alt="React Logo" />
       </div>
       <div className="middle">
-        <div className="Navigation active">
+        <div className={`Navigation ${pageName === "Home" ? "active" : ""}`}>
           <img src={Navlogo} alt="React Logo" />
         </div>
-        <div className="Navigation">
+        <div className={`Navigation ${pageName === "Hash" ? "active" : ""}`}>
           <img src={Hash} alt="React Logo" />
         </div>
       </div>

@@ -1,17 +1,19 @@
-import { useState } from "react";
-import Navbar from "./components/navbar2";
-import avatar from "./assets/avatar.svg";
+// JavascriptCommunity.jsx
 
-import Bookmark from "./assets/bookmark.svg";
-import Like from "./assets/Like.svg";
-import Comment from "./assets/Chat.svg";
-import "./App.css";
-function Community() {
+import { useState } from "react";
+import Navbar from "../components/navbar2";
+import avatar from "../assets/avatar.svg";
+import Bookmark from "../assets/bookmark.svg";
+import Like from "../assets/Like.svg";
+import Comment from "../assets/Chat.svg";
+import "../App.css";
+
+function JavascriptCommunity() {
   return (
     <>
       <main className="Community">
-        <Navbar />
-        <section className="Forum">
+      <Navbar pageName="Javascript" />
+      <section className="Forum">
           <div className="card">
             <div className="header">
               <img src={avatar} alt="React Logo" />
@@ -70,4 +72,4 @@ function Community() {
   );
 }
 
-export default Community;
+export default JavascriptCommunity;

@@ -1,6 +1,9 @@
+// App.jsx
+
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar1 from "./components/navbar1";
-import CommunityCard from "./components/CommunityCard";
+import CommunityCard from "./components/communities/CommunityCard";
 import "./App.css";
 import cardimage from "./assets/cardimage.png";
 import Clogo from "./assets/Clogo.png";
@@ -13,12 +16,14 @@ const communityData = [
     members: "23,600",
     backgroundImage: cardimage,
     logo: Clogo,
+    path: "/csharp",
   },
   {
     name: "Javascript",
     members: "23,600",
     backgroundImage: javascriptimage,
     logo: javalogo,
+    path: "/javascript",
   },
   // Add more community objects as needed
 ];
@@ -34,13 +39,14 @@ function App() {
           <h1>Top Communities</h1>
           <div className="cards">
             {communityData.map((community) => (
-              <CommunityCard
-                key={community.name}
-                name={community.name}
-                members={community.members}
-                backgroundImage={community.backgroundImage}
-                logo={community.logo}
-              />
+              <Link to={community.path} key={community.name}>
+                <CommunityCard
+                  name={community.name}
+                  members={community.members}
+                  backgroundImage={community.backgroundImage}
+                  logo={community.logo}
+                />
+              </Link>
             ))}
           </div>
         </div>
