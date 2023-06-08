@@ -4,8 +4,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App.jsx";
-import CSharpCommunity from "./components/communities/CSharpCommunity.jsx";
-import JavascriptCommunity from "./components/communities/JavascriptCommunity.jsx";
+import CSharpCommunity from "./communities/CSharpCommunity.jsx";
+import JavascriptCommunity from "./communities/JavascriptCommunity.jsx";
 import "./index.css";
 
 ReactDOM.render(

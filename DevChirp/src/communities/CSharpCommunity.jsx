@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Navbar from "../components/navbar2";
-import avatar from "../assets/avatar.svg";
+import avatar from "../assets/avatar.svg"
 import Bookmark from "../assets/bookmark.svg";
 import Like from "../assets/Like.svg";
 import Comment from "../assets/Chat.svg";
 import "../App.css";
+
 
 function CSharpCommunity() {
   return (

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar1 from "./components/navbar1";
-import CommunityCard from "./components/communities/CommunityCard";
+import CommunityCard from "./components/CommunityCard";
 import "./App.css";
 import cardimage from "./assets/cardimage.png";
 import Clogo from "./assets/Clogo.png";
@@ -17,6 +17,13 @@ const communityData = [
     backgroundImage: cardimage,
     logo: Clogo,
     path: "/csharp",
+  },
+  {
+    name: "Javascript",
+    members: "23,600",
+    backgroundImage: javascriptimage,
+    logo: javalogo,
+    path: "/javascript",
   },
   {
     name: "Javascript",
