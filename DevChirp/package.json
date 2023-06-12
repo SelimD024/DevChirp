@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "autoprefixer": "^9.8.6",
     "firebase": "^9.22.1",
+    "postcss": "^8.4.24",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4"

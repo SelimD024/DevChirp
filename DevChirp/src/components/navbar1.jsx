@@ -12,9 +12,10 @@ function Navbar1() {
       <div className="top">
         <img src={burger} alt="React Logo" />
         <div className="navigation">
-          <ul>
+          <ul><dialog></dialog>
             <li>Home</li>
             <li>Topics</li>
+            <li onClick={() => setShowLoginForm(true)}>Log in</li>
           </ul>
         </div>
         <img src={avatar} alt="React Logo" />

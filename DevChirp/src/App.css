@@ -165,6 +165,13 @@ body {
   display: flex;
 }
 
+.login-form{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.162);
+}
+
 @media (min-width: 568px) {
   .community-cards {
     padding: 24px 47px;
