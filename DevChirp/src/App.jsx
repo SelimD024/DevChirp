@@ -32,7 +32,7 @@ const communityData = [
     logo: javalogo,
     path: "/TESTPAGINA",
   },
-  
+
   // Add more community objects as needed
 ];
 
@@ -43,6 +43,7 @@ function App() {
     <>
       <main className="index">
         <Navbar1 />
+
         <div className="community-cards bg-black">
           <h1>Top Communities</h1>
           <div className="cards">
