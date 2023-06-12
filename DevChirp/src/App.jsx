@@ -26,12 +26,13 @@ const communityData = [
     path: "/javascript",
   },
   {
-    name: "Javascript",
+    name: "TESTpagina",
     members: "23,600",
     backgroundImage: javascriptimage,
     logo: javalogo,
-    path: "/javascript",
+    path: "/TESTPAGINA",
   },
+  
   // Add more community objects as needed
 ];
 
@@ -57,7 +58,21 @@ function App() {
             ))}
           </div>
         </div>
-        {/* More community sections */}
+        <div className="community-cards bg-black">
+          <h1>Top Communities</h1>
+          <div className="cards">
+            {communityData.map((community) => (
+              <Link to={community.path} key={community.name}>
+                <CommunityCard
+                  name={community.name}
+                  members={community.members}
+                  backgroundImage={community.backgroundImage}
+                  logo={community.logo}
+                />
+              </Link>
+            ))}
+          </div>
+        </div>
       </main>
     </>
   );
