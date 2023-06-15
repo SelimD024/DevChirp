@@ -1,5 +1,3 @@
-// App.jsx
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar1 from "./components/navbar1";
@@ -33,7 +31,6 @@ const communityData = [
     path: "/TESTPAGINA",
   },
   
-  // Add more community objects as needed
 ];
 
 function App() {
