@@ -1,5 +1,3 @@
-// Main.jsx
-
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -7,7 +5,6 @@ import App from "./App.jsx";
 import CSharpCommunity from "./communities/CSharp.jsx";
 import JavascriptCommunity from "./communities/Javascript.jsx";
 import Login from "./components/LoginPage.jsx";
-import CardDetails from "./components/CardDetails.jsx"; // Nieuw bestand voor kaartdetails
 import "./index.css";
 import { initFirebase } from "../firebase/firebase.ts";
 
@@ -28,11 +25,6 @@ ReactDOM.render(
         </Route>
         <Route exact path="/login">
           <Login />
-        </Route>
-        <Route exact path="/card/:community/:id">
-          {" "}
-          {/* Dynamische route voor kaartdetails */}
-          <CardDetails />
         </Route>
         <Route exact path="*">
           <p>Not found</p>

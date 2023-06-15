@@ -66,31 +66,35 @@ function JavascriptCommunity() {
 
   const handleLike = async (postId) => {
     const db = getFirestore();
-    const postRef = doc(collection(db, `${pageName}_posts`), postId); // Get the reference to the specific post document
+    const postRef = doc(collection(db, `${pageName}_posts`), postId);
     const currentUserUid = user.uid;
-
+  
     try {
       const docSnap = await getDoc(postRef);
       if (!docSnap.exists()) {
-        throw new Error("Post bestaat niet.");
+        throw new Error("Post does not exist.");
       }
-
-      const likedBy = docSnap.data().likedBy || [];
+  
+      let likedBy = docSnap.data().likedBy || []; // Initialize likedBy as an array if it's undefined or not an array
+      if (!Array.isArray(likedBy)) {
+        likedBy = [likedBy]; // Convert to an array with a single element
+      }
+  
       if (likedBy.includes(currentUserUid)) {
-        console.log("Gebruiker heeft al een like gegeven.");
+        console.log("User has already liked the post.");
         return;
       }
-
+  
       await runTransaction(db, async (transaction) => {
         transaction.update(postRef, {
-          likes: increment(1), // Verhoog het aantal likes met 1
-          likedBy: arrayUnion(currentUserUid), // Voeg de huidige gebruikers-ID toe aan de likedBy-array
+          likes: increment(1),
+          likedBy: arrayUnion(currentUserUid),
         });
       });
-
-      console.log("Like toegevoegd.");
+  
+      console.log("Like added.");
     } catch (error) {
-      console.error("Fout bij het updaten van het aantal likes: ", error);
+      console.error("Error updating the number of likes: ", error);
     }
   };
 

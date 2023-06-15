@@ -3,13 +3,27 @@ import burger from "../assets/burger.svg";
 import avatar from "../assets/avatar.svg";
 import Navlogo from "../assets/navigation.svg";
 import Hash from "../assets/hash.svg";
-import { getAuth } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 function Navbar({ pageName }) {
+  const provider = new GoogleAuthProvider();
   const auth = getAuth();
   const [user] = useAuthState(auth);
   const [profileImage, setProfileImage] = useState(null); // Added state for profile image
+
+  const signIn = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const signOut = () => {
+    auth.signOut();
+    setProfileImage(null); // Reset profile image on sign out
+  };
 
   useEffect(() => {
     if (user) {
@@ -36,8 +50,13 @@ function Navbar({ pageName }) {
             </li>
           </ul>
         </div>
+        {user ? (
+          <li onClick={signOut}>Sign out</li>
+        ) : (
+          <li onClick={signIn}>Log in</li>
+        )}
         {user && (
-          <img src={profileImage} alt="Profile" className="profilePicture" />
+          <img src={profileImage} className="profilePicture" alt="Profile" />
         )}
       </div>
       <div className="middle">
