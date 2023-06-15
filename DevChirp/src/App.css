@@ -147,7 +147,7 @@ body {
 
 .Forum .card .header {
   display: grid;
-  grid-template-columns: auto 1fr 70%;
+  grid-template-columns: auto 1fr 95%;
   gap: 8px;
 }
 
