@@ -1,5 +1,3 @@
-// App.jsx
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar1 from "./components/navbar1";
@@ -32,8 +30,7 @@ const communityData = [
     logo: javalogo,
     path: "/TESTPAGINA",
   },
-
-  // Add more community objects as needed
+  
 ];
 
 function App() {
@@ -43,7 +40,6 @@ function App() {
     <>
       <main className="index">
         <Navbar1 />
-
         <div className="community-cards bg-black">
           <h1>Top Communities</h1>
           <div className="cards">
