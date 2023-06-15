@@ -23,14 +23,6 @@ const communityData = [
     logo: javalogo,
     path: "/javascript",
   },
-  {
-    name: "TESTpagina",
-    members: "23,600",
-    backgroundImage: javascriptimage,
-    logo: javalogo,
-    path: "/TESTPAGINA",
-  },
-  
 ];
 
 function App() {

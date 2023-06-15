@@ -1,61 +1,136 @@
-// CSharp.jsx
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/navbar2";
 import avatar from "../assets/avatar.svg";
 import Bookmark from "../assets/bookmark.svg";
 import Like from "../assets/Like.svg";
 import Comment from "../assets/Chat.svg";
-import { useHistory, Link } from "react-router-dom";
-import { cardData } from "../Data/cardData"; // Aangepast importpad
+import Vector from "../assets/vector.svg";
+import { Link, useLocation, useHistory  } from "react-router-dom";
+import {
+  getFirestore,
+  collection,
+  doc,
+  addDoc,
+  onSnapshot,
+  updateDoc,
+  runTransaction,
+  arrayUnion,
+  arrayRemove,
+  getDoc,
+  increment,
+} from "firebase/firestore";
+
+import CreatePostModal from "../components/PostModal";
+import { getAuth } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function CSharpCommunity() {
-  const [cards] = useState(cardData.csharp); // Gebruik de kaartgegevens voor de C# community
+  const location = useLocation();
+  const [cards, setCards] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const pageName = location.pathname.substring(1); // Get the page name from the URL
+  const [user] = useAuthState(getAuth());
+
+  useEffect(() => {
+    const db = getFirestore();
+    const postRef = collection(db, `${pageName}_posts`); // Use the page name to construct the collection name
+
+    const unsubscribe = onSnapshot(postRef, (querySnapshot) => {
+      const posts = [];
+      querySnapshot.forEach((doc) => {
+        posts.push({ id: doc.id, ...doc.data() });
+      });
+      setCards(posts);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [pageName]);
 
   const history = useHistory();
 
-  const handleCreatePost = async (community) => {
+  const createPost = async (postData) => {
+    const db = getFirestore();
+    const postRef = collection(db, `${pageName}_posts`); // Use the page name to construct the collection name
+
     try {
-      const newPost = {
-        // Stel hier de gegevens in voor de nieuwe post, inclusief de community-informatie
-        community: community,
-        // Andere postgegevens...
-      };
-
-      // Maak een nieuwe post in de Firestore-database
-      const docRef = await addDoc(collection(db, "posts"), newPost);
-      console.log("Document written with ID: ", docRef.id);
-
-      // Na het maken van de post kun je de gebruiker doorsturen naar de nieuwe postpagina voor de huidige community
-      history.push(`/${community}/new`);
+      const docRef = await addDoc(postRef, {
+        ...postData,
+        likes: 0,
+        likedBy: [],
+      }); // Voeg likes: 0 en likedBy: [] toe aan de postgegevens
+      console.log("Post toegevoegd met ID: ", docRef.id);
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error("Fout bij het toevoegen van de post: ", error);
+    }
+  };
+
+  const handleLike = async (postId) => {
+    const db = getFirestore();
+    const postRef = doc(collection(db, `${pageName}_posts`), postId); // Get the reference to the specific post document
+    const currentUserUid = user.uid;
+
+    try {
+      const docSnap = await getDoc(postRef);
+      if (!docSnap.exists()) {
+        throw new Error("Post bestaat niet.");
+      }
+
+      const likedBy = docSnap.data().likedBy || [];
+      if (likedBy.includes(currentUserUid)) {
+        console.log("Gebruiker heeft al een like gegeven.");
+        return;
+      }
+
+      await runTransaction(db, async (transaction) => {
+        transaction.update(postRef, {
+          likes: increment(1), // Verhoog het aantal likes met 1
+          likedBy: arrayUnion(currentUserUid), // Voeg de huidige gebruikers-ID toe aan de likedBy-array
+        });
+      });
+
+      console.log("Like toegevoegd.");
+    } catch (error) {
+      console.error("Fout bij het updaten van het aantal likes: ", error);
     }
   };
 
   return (
     <>
       <main className="Community">
-        <Navbar pageName="C#" />
+        <Navbar pageName={pageName} />
         <section className="Forum">
           {cards.map((card) => (
             <div className="card" key={card.id}>
               <div className="header">
-                <img src={avatar} alt="React Logo" />
+                <img
+                  src={avatar}
+                  alt="React Logo"
+                  onClick={() => history.push("/")}
+                />
+
                 <div className="card-info">
-                  <b className="Username">{card.username}</b>
+                  <h2 className="Username">{card.username}</h2>
                   <p className="daysago">{card.daysAgo}</p>
                 </div>
                 <img src={Bookmark} alt="React Logo" />
               </div>
               <div className="body">
                 <h2>{card.title}</h2>
-                <p>{card.content}</p>
+                <p>{card.description}</p>
               </div>
               <div className="footer">
                 <div className="inner">
-                  <img src={Like} alt="React Logo" /> <span>{card.likes}</span>
+                  <img
+                    src={Like}
+                    alt="React Logo"
+                    onClick={() => handleLike(card.id)} // Voeg de onClick-handler toe aan de afbeelding
+                    style={{ cursor: "pointer" }} // Voeg een cursorstijl toe om aan te geven dat het klikbaar is
+                  />
+                  <span>{card.likes}</span>
                 </div>
+
                 <div className="inner">
                   <img src={Comment} alt="React Logo" />{" "}
                   <span>{card.comments}</span>
@@ -63,8 +138,20 @@ function CSharpCommunity() {
               </div>
             </div>
           ))}
-          <button onClick={handleCreatePost}>Maak een nieuwe post</button>
         </section>
+        {user && (
+          <button className="modalbutton" onClick={() => setIsModalOpen(true)}>
+            <h2>
+              <img src={Vector} alt="React Logo" />
+            </h2>
+            <h2>Maak een nieuwe post</h2>
+          </button>
+        )}
+        <CreatePostModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={createPost}
+        />
       </main>
     </>
   );

@@ -132,11 +132,21 @@ body {
   transform: translateX(-50%);
 }
 
+.button {
+  background-color: #7b16ff;
+  padding: 10px;
+  border-radius: 100px;
+  color: white;
+  border: 0px solid;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
 .Forum {
   height: 100%;
   padding: 17px 5%;
   gap: 15px;
   display: grid;
+  position: relative;
 }
 
 .Forum .card {
@@ -165,11 +175,63 @@ body {
   display: flex;
 }
 
-.login-form{
+.login-form {
   width: 100vw;
   height: 100vh;
   position: fixed;
   background-color: rgba(0, 0, 0, 0.162);
+}
+
+.modalbutton {
+  background-color: #7b16ff;
+  padding: 20px 15px;
+  border-radius: 20px;
+  color: white;
+  border: 0px solid;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 5%;
+  display: flex;
+  gap: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  
+}
+
+.button:hover, .modalbutton:hover{
+  background-color: #7b16ff7e;
+  cursor: pointer;
+}
+
+.modal {
+  position: fixed;
+  background-color: rgba(36, 36, 36, 0.458);
+  width: 100vw;
+  height: 100vh;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal .modal-content{
+  background-color: white;
+  padding: 2%;
+  border-radius: 10px;
+  gap: 20px;
+  display: grid;
+}
+
+.modal .modal-actions{
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2%;
 }
 
 @media (min-width: 568px) {
