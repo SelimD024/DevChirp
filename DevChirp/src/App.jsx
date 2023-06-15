@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, onSnapshot, query, orderBy, limit } from "firebase/firestore";
 import Navbar1 from "./components/navbar1";
 import CommunityCard from "./components/CommunityCard";
 import "./App.css";
@@ -28,13 +28,19 @@ const communityData = [
 
 function App() {
   const [count, setCount] = useState(0);
-  const [trendingPosts, setTrendingPosts] = useState([]); // Verplaats de useState-hook naar hier
+  const [trendingPosts, setTrendingPosts] = useState([]);
 
   useEffect(() => {
     const db = getFirestore();
     const trendingPostsRef = collection(db, "trending_posts");
 
-    const unsubscribe = onSnapshot(trendingPostsRef, (querySnapshot) => {
+    const q = query(
+      trendingPostsRef,
+      orderBy("likes", "desc"),
+      limit(5)
+    );
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const posts = [];
       querySnapshot.forEach((doc) => {
         posts.push({ id: doc.id, ...doc.data() });

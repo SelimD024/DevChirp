@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/navbar2";
+import Post from "../components/Posts"; // Importeer de Post-component
 import avatar from "../assets/avatar.svg";
 import Bookmark from "../assets/bookmark.svg";
 import Like from "../assets/Like.svg";
 import Comment from "../assets/Chat.svg";
 import Vector from "../assets/vector.svg";
-import { Link, useLocation } from "react-router-dom";
+import CreatePostModal from "../components/PostModal";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import {
   getFirestore,
   collection,
@@ -18,13 +20,33 @@ import {
   arrayRemove,
   getDoc,
   increment,
+  serverTimestamp, // Importeer serverTimestamp vanuit 'firebase/firestore'
 } from "firebase/firestore";
-
-import CreatePostModal from "../components/PostModal";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-function JavascriptCommunity() {
+function formatTimeSincePost(postTime) {
+  const currentTime = new Date();
+  const timeDiff = Math.abs(currentTime - postTime);
+
+  // Bereken het aantal dagen, uren en minuten sinds de post
+  const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(
+    (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+
+  // Bepaal het juiste label op basis van de tijdseenheid
+  if (days > 0) {
+    return `${days}d`;
+  } else if (hours > 0) {
+    return `${hours}u`;
+  } else {
+    return `${minutes}m`;
+  }
+}
+
+function CSharpCommunity() {
   const location = useLocation();
   const [cards, setCards] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,7 +60,10 @@ function JavascriptCommunity() {
     const unsubscribe = onSnapshot(postRef, (querySnapshot) => {
       const posts = [];
       querySnapshot.forEach((doc) => {
-        posts.push({ id: doc.id, ...doc.data() });
+        const data = doc.data();
+        const createdAt = data.createdAt ? data.createdAt.toDate() : null; // Check if createdAt exists before calling toDate()
+        const daysAgo = createdAt ? formatTimeSincePost(createdAt) : ""; // Format the time since the post was created
+        posts.push({ id: doc.id, ...data, daysAgo });
       });
       setCards(posts);
     });
@@ -47,6 +72,8 @@ function JavascriptCommunity() {
       unsubscribe();
     };
   }, [pageName]);
+
+  const history = useHistory();
 
   const createPost = async (postData) => {
     const db = getFirestore();
@@ -57,7 +84,8 @@ function JavascriptCommunity() {
         ...postData,
         likes: 0,
         likedBy: [],
-      }); // Voeg likes: 0 en likedBy: [] toe aan de postgegevens
+        createdAt: serverTimestamp(), // Use serverTimestamp() to set the createdAt field with the current server time
+      });
       console.log("Post toegevoegd met ID: ", docRef.id);
     } catch (error) {
       console.error("Fout bij het toevoegen van de post: ", error);
@@ -68,30 +96,30 @@ function JavascriptCommunity() {
     const db = getFirestore();
     const postRef = doc(collection(db, `${pageName}_posts`), postId);
     const currentUserUid = user.uid;
-  
+
     try {
       const docSnap = await getDoc(postRef);
       if (!docSnap.exists()) {
         throw new Error("Post does not exist.");
       }
-  
-      let likedBy = docSnap.data().likedBy || []; // Initialize likedBy as an array if it's undefined or not an array
+
+      let likedBy = docSnap.data().likedBy || [];
       if (!Array.isArray(likedBy)) {
-        likedBy = [likedBy]; // Convert to an array with a single element
+        likedBy = [likedBy];
       }
-  
+
       if (likedBy.includes(currentUserUid)) {
         console.log("User has already liked the post.");
         return;
       }
-  
+
       await runTransaction(db, async (transaction) => {
         transaction.update(postRef, {
           likes: increment(1),
           likedBy: arrayUnion(currentUserUid),
         });
       });
-  
+
       console.log("Like added.");
     } catch (error) {
       console.error("Error updating the number of likes: ", error);
@@ -104,42 +132,25 @@ function JavascriptCommunity() {
         <Navbar pageName={pageName} />
         <section className="Forum">
           {cards.map((card) => (
-            <div className="card" key={card.id}>
-              <div className="header">
-                <img src={avatar} alt="React Logo" />
-                <div className="card-info">
-                  <h2 className="Username">{card.username}</h2>
-                  <p className="daysago">{card.daysAgo}</p>
-                </div>
-                <img src={Bookmark} alt="React Logo" />
-              </div>
-              <div className="body">
-                <h2>{card.title}</h2>
-                <p>{card.description}</p>
-              </div>
-              <div className="footer">
-                <div className="inner">
-                  <img
-                    src={Like}
-                    alt="React Logo"
-                    onClick={() => handleLike(card.id)} // Voeg de onClick-handler toe aan de afbeelding
-                    style={{ cursor: "pointer" }} // Voeg een cursorstijl toe om aan te geven dat het klikbaar is
-                  />
-                  <span>{card.likes}</span>
-                </div>
-
-                <div className="inner">
-                  <img src={Comment} alt="React Logo" />{" "}
-                  <span>{card.comments}</span>
-                </div>
-              </div>
-            </div>
+            <Post
+              key={card.id}
+              id={card.id}
+              username={card.username}
+              daysAgo={card.daysAgo}
+              title={card.title}
+              description={card.description}
+              likes={card.likes}
+              comments={card.comments}
+              handleLike={handleLike}
+            />
           ))}
         </section>
         {user && (
           <button className="modalbutton" onClick={() => setIsModalOpen(true)}>
-            <h2><img src={Vector} alt="React Logo" /></h2>
-            <h2>Maak een nieuwe post</h2>
+            <h2>
+              <img src={Vector} alt="React Logo" />
+            </h2>
+            <h2>Nieuwe post</h2>
           </button>
         )}
         <CreatePostModal
@@ -152,4 +163,4 @@ function JavascriptCommunity() {
   );
 }
 
-export default JavascriptCommunity;
+export default CSharpCommunity;
