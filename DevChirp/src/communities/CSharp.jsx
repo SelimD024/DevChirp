@@ -18,11 +18,33 @@ import {
   arrayRemove,
   getDoc,
   increment,
+  serverTimestamp, // Importeer serverTimestamp vanuit 'firebase/firestore'
 } from "firebase/firestore";
 
 import CreatePostModal from "../components/PostModal";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+
+function formatTimeSincePost(postTime) {
+  const currentTime = new Date();
+  const timeDiff = Math.abs(currentTime - postTime);
+
+  // Bereken het aantal dagen, uren en minuten sinds de post
+  const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(
+    (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+
+  // Bepaal het juiste label op basis van de tijdseenheid
+  if (days > 0) {
+    return `${days}d`;
+  } else if (hours > 0) {
+    return `${hours}u`;
+  } else {
+    return `${minutes}m`;
+  }
+}
 
 function CSharpCommunity() {
   const location = useLocation();
@@ -38,7 +60,10 @@ function CSharpCommunity() {
     const unsubscribe = onSnapshot(postRef, (querySnapshot) => {
       const posts = [];
       querySnapshot.forEach((doc) => {
-        posts.push({ id: doc.id, ...doc.data() });
+        const data = doc.data();
+        const createdAt = data.createdAt ? data.createdAt.toDate() : null; // Check if createdAt exists before calling toDate()
+        const daysAgo = createdAt ? formatTimeSincePost(createdAt) : ""; // Format the time since the post was created
+        posts.push({ id: doc.id, ...data, daysAgo });
       });
       setCards(posts);
     });
@@ -59,7 +84,8 @@ function CSharpCommunity() {
         ...postData,
         likes: 0,
         likedBy: [],
-      }); // Voeg likes: 0 en likedBy: [] toe aan de postgegevens
+        createdAt: serverTimestamp(), // Use serverTimestamp() to set the createdAt field with the current server time
+      });
       console.log("Post toegevoegd met ID: ", docRef.id);
     } catch (error) {
       console.error("Fout bij het toevoegen van de post: ", error);
@@ -77,9 +103,9 @@ function CSharpCommunity() {
         throw new Error("Post does not exist.");
       }
 
-      let likedBy = docSnap.data().likedBy || []; // Initialize likedBy as an array if it's undefined or not an array
+      let likedBy = docSnap.data().likedBy || [];
       if (!Array.isArray(likedBy)) {
-        likedBy = [likedBy]; // Convert to an array with a single element
+        likedBy = [likedBy];
       }
 
       if (likedBy.includes(currentUserUid)) {
@@ -129,8 +155,8 @@ function CSharpCommunity() {
                   <img
                     src={Like}
                     alt="React Logo"
-                    onClick={() => handleLike(card.id)} // Voeg de onClick-handler toe aan de afbeelding
-                    style={{ cursor: "pointer" }} // Voeg een cursorstijl toe om aan te geven dat het klikbaar is
+                    onClick={() => handleLike(card.id)}
+                    style={{ cursor: "pointer" }}
                   />
                   <span>{card.likes}</span>
                 </div>
