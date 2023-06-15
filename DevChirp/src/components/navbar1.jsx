@@ -1,17 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import burger from "../assets/burger.svg";
-import avatar from "../assets/avatar.svg";
 import headerbackground from "../assets/headerbackground.png";
-import { Redirect } from 'react-router-dom'
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { initFirebase } from '../../firebase/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
-
+import { Redirect } from "react-router-dom";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { initFirebase } from "../../firebase/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Navbar1() {
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
   const [user, loading] = useAuthState(auth);
+  const [profileImage, setProfileImage] = useState(null); // Added state for profile image
 
   const signIn = async () => {
     try {
@@ -21,10 +20,24 @@ function Navbar1() {
     }
   };
 
-  if (!user) {
-    return <Redirect to="/" />  ;
-  }
+  const signOut = () => {
+    auth.signOut();
+    setProfileImage(null); // Reset profile image on sign out
+  };
 
+  useEffect(() => {
+    if (user) {
+      handleProfileImage();
+    }
+  }, [user]); // Run whenever the user changes
+
+  const handleProfileImage = () => {
+    if (user.photoURL) {
+      setProfileImage(user.photoURL);
+    } else {
+      setProfileImage(avatar); // Default profile image
+    }
+  };
 
   return (
     <div
@@ -34,21 +47,26 @@ function Navbar1() {
       <div className="top">
         <img src={burger} alt="React Logo" />
         <div className="navigation">
-          <ul><dialog></dialog>
+          <ul>
             <li>Home</li>
             <li>Topics</li>
-            < button onClick={signIn}>Log in</button>
-            <button onClick={() => auth.signOut()}>Sign out</button>
           </ul>
         </div>
-        <img src={avatar} alt="React Logo" />
+        {user ? (
+          <li onClick={signOut}>Sign out</li>
+        ) : (
+          <li onClick={signIn}>Log in</li>
+        )}
+        {user && (
+          <img src={profileImage} className="profilePicture" alt="Profile" />
+        )}
       </div>
       <div className="middle">
-        <h1>Hi, Stijn</h1>
+        <h1>Hi, {user?.displayName || "Guest"}</h1> {/* Display user's name */}
         <p>Find community by using topics or products</p>
       </div>
       <div className="bottom">
-        <div className="searchbar"></div>
+        <input className="searchbar"></input>
       </div>
     </div>
   );

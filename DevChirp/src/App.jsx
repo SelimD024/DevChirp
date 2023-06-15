@@ -23,6 +23,7 @@ const communityData = [
     logo: javalogo,
     path: "/javascript",
   },
+
 ];
 
 function App() {
