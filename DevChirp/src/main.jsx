@@ -1,13 +1,14 @@
-// Main.jsx
-
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App.jsx";
-import CSharpCommunity from "./communities/CSharpCommunity.jsx";
-import JavascriptCommunity from "./communities/JavascriptCommunity.jsx";
-import Login from "./components/LoginPage.jsx"
+import CSharpCommunity from "./communities/CSharp.jsx";
+import JavascriptCommunity from "./communities/Javascript.jsx";
+import Login from "./components/LoginPage.jsx";
 import "./index.css";
+import { initFirebase } from "../firebase/firebase.ts";
+
+initFirebase(); // Voer de initFirebase-functie uit
 
 ReactDOM.render(
   <React.StrictMode>

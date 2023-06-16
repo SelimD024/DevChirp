@@ -6,6 +6,7 @@
   padding: 0;
   margin: 0;
   font-family: "Inter";
+  list-style: none;
 }
 
 body {
@@ -23,7 +24,7 @@ body {
   padding: 20px 20px 11px 20px;
   display: grid;
   align-items: center;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   gap: 5%;
 }
 
@@ -45,6 +46,15 @@ body {
   color: white;
   gap: 30px;
   list-style: none;
+}
+
+.main-header .top li {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.main-header .top li:hover {
+  cursor: pointer;
+  color: #9f66e9;
 }
 
 .main-header .middle {
@@ -69,20 +79,28 @@ body {
 }
 
 .main-header .bottom {
-  padding: 0px 67px;
   background-image: linear-gradient(
     to bottom,
     rgba(255, 0, 0, 0) 50%,
     white 50%
   );
+  display: flex;
   background-repeat: no-repeat;
+  justify-content: center;
 }
 
 .searchbar {
-  padding: 25px;
+  padding: 15px;
   background-color: white;
   border-radius: 8px;
   border: 1px solid #86898b80;
+  width: 90%;
+  margin: 0px 10px;
+}
+
+.profilePicture {
+  border-radius: 60px;
+  width: 50%;
 }
 
 .community-cards {
@@ -132,11 +150,21 @@ body {
   transform: translateX(-50%);
 }
 
+.button {
+  background-color: #7b16ff;
+  padding: 10px;
+  border-radius: 100px;
+  color: white;
+  border: 0px solid;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
 .Forum {
   height: 100%;
   padding: 17px 5%;
   gap: 15px;
   display: grid;
+  position: relative;
 }
 
 .Forum .card {
@@ -147,7 +175,7 @@ body {
 
 .Forum .card .header {
   display: grid;
-  grid-template-columns: auto 1fr 70%;
+  grid-template-columns: auto 1fr 95%;
   gap: 8px;
 }
 
@@ -165,11 +193,63 @@ body {
   display: flex;
 }
 
-.login-form{
+.login-form {
   width: 100vw;
   height: 100vh;
   position: fixed;
   background-color: rgba(0, 0, 0, 0.162);
+}
+
+.modalbutton {
+  background-color: #7b16ff;
+  padding: 20px 15px;
+  border-radius: 20px;
+  color: white;
+  border: 0px solid;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 5%;
+  display: flex;
+  gap: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button:hover,
+.modalbutton:hover {
+  background-color: #7b16ff7e;
+  cursor: pointer;
+}
+
+.modal {
+  position: fixed;
+  background-color: rgba(36, 36, 36, 0.458);
+  width: 100vw;
+  height: 100vh;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal .modal-content {
+  background-color: white;
+  padding: 2%;
+  border-radius: 10px;
+  gap: 20px;
+  display: grid;
+}
+
+.modal .modal-actions {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2%;
 }
 
 @media (min-width: 568px) {

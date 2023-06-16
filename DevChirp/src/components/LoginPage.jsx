@@ -1,8 +1,9 @@
-import React from 'react';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { initFirebase } from '../../firebase/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { Redirect } from 'react-router-dom';
+import React from "react";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { initFirebase } from "../../firebase/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Redirect } from "react-router-dom";
+import "./Tailwind_import.css";
 
 const Home = () => {
   initFirebase();
@@ -27,7 +28,7 @@ const Home = () => {
   };
 
   return (
-    <div className="text-center flex flex-col gap-4 items-center">
+    <div className="bg-red">
       <div>Login to continue</div>
       <button onClick={signIn}>
         <div className="bg-red-600 text-white rounded-md p-2 w-48">Sign in</div>

@@ -1,7 +1,6 @@
-// App.jsx
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getFirestore, collection, onSnapshot, query, orderBy, limit } from "firebase/firestore";
 import Navbar1 from "./components/navbar1";
 import CommunityCard from "./components/CommunityCard";
 import "./App.css";
@@ -25,25 +24,39 @@ const communityData = [
     logo: javalogo,
     path: "/javascript",
   },
-  {
-    name: "TESTpagina",
-    members: "23,600",
-    backgroundImage: javascriptimage,
-    logo: javalogo,
-    path: "/TESTPAGINA",
-  },
-
-  // Add more community objects as needed
 ];
 
 function App() {
   const [count, setCount] = useState(0);
+  const [trendingPosts, setTrendingPosts] = useState([]);
+
+  useEffect(() => {
+    const db = getFirestore();
+    const trendingPostsRef = collection(db, "trending_posts");
+
+    const q = query(
+      trendingPostsRef,
+      orderBy("likes", "desc"),
+      limit(5)
+    );
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const posts = [];
+      querySnapshot.forEach((doc) => {
+        posts.push({ id: doc.id, ...doc.data() });
+      });
+      setTrendingPosts(posts);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <>
       <main className="index">
         <Navbar1 />
-
         <div className="community-cards bg-black">
           <h1>Top Communities</h1>
           <div className="cards">
@@ -60,19 +73,14 @@ function App() {
           </div>
         </div>
         <div className="community-cards bg-black">
-          <h1>Top Communities</h1>
-          <div className="cards">
-            {communityData.map((community) => (
-              <Link to={community.path} key={community.name}>
-                <CommunityCard
-                  name={community.name}
-                  members={community.members}
-                  backgroundImage={community.backgroundImage}
-                  logo={community.logo}
-                />
-              </Link>
-            ))}
-          </div>
+          <h1>Trending posts</h1>
+          {trendingPosts.map((post) => (
+            <div key={post.id}>
+              <h2>{post.title}</h2>
+              <p>{post.content}</p>
+              {/* Voeg hier de rest van de weergave van de post toe */}
+            </div>
+          ))}
         </div>
       </main>
     </>
