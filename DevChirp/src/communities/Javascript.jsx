@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/navbar2";
-import Post from "../components/Posts"; // Importeer de Post-component
+import Post from "../components/Posts";
 import avatar from "../assets/avatar.svg";
 import Bookmark from "../assets/bookmark.svg";
 import Like from "../assets/Like.svg";
@@ -8,6 +8,7 @@ import Comment from "../assets/Chat.svg";
 import Vector from "../assets/vector.svg";
 import CreatePostModal from "../components/PostModal";
 import { Link, useLocation, useHistory } from "react-router-dom";
+
 import {
   getFirestore,
   collection,
@@ -20,8 +21,9 @@ import {
   arrayRemove,
   getDoc,
   increment,
-  serverTimestamp, // Importeer serverTimestamp vanuit 'firebase/firestore'
+  serverTimestamp,
 } from "firebase/firestore";
+
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -57,6 +59,7 @@ function CSharpCommunity() {
     const db = getFirestore();
     const postRef = collection(db, `${pageName}_posts`); // Use the page name to construct the collection name
 
+
     const unsubscribe = onSnapshot(postRef, (querySnapshot) => {
       const posts = [];
       querySnapshot.forEach((doc) => {
@@ -73,19 +76,20 @@ function CSharpCommunity() {
     };
   }, [pageName]);
 
-  const history = useHistory();
-
   const createPost = async (postData) => {
     const db = getFirestore();
-    const postRef = collection(db, `${pageName}_posts`); // Use the page name to construct the collection name
+    const postRef = collection(db, `${pageName}_posts`);
 
     try {
       const docRef = await addDoc(postRef, {
         ...postData,
+        userId: user.uid, // Voeg het userId-veld toe aan de postgegevens
         likes: 0,
         likedBy: [],
-        createdAt: serverTimestamp(), // Use serverTimestamp() to set the createdAt field with the current server time
+        createdAt: serverTimestamp(),
+        profilePicture: user.photoURL,
       });
+
       console.log("Post toegevoegd met ID: ", docRef.id);
     } catch (error) {
       console.error("Fout bij het toevoegen van de post: ", error);
@@ -94,11 +98,11 @@ function CSharpCommunity() {
 
   const handleLike = async (postId) => {
     const db = getFirestore();
-    const postRef = doc(collection(db, `${pageName}_posts`), postId);
-    const currentUserUid = user.uid;
 
     try {
+      const postRef = doc(db, `${pageName}_posts/${postId}`);
       const docSnap = await getDoc(postRef);
+
       if (!docSnap.exists()) {
         throw new Error("Post does not exist.");
       }
@@ -108,7 +112,7 @@ function CSharpCommunity() {
         likedBy = [likedBy];
       }
 
-      if (likedBy.includes(currentUserUid)) {
+      if (likedBy.includes(user.uid)) {
         console.log("User has already liked the post.");
         return;
       }
@@ -116,7 +120,7 @@ function CSharpCommunity() {
       await runTransaction(db, async (transaction) => {
         transaction.update(postRef, {
           likes: increment(1),
-          likedBy: arrayUnion(currentUserUid),
+          likedBy: arrayUnion(user.uid),
         });
       });
 
@@ -140,8 +144,10 @@ function CSharpCommunity() {
               title={card.title}
               description={card.description}
               likes={card.likes}
+              hashtag={card.hashtag}
               comments={card.comments}
               handleLike={handleLike}
+              profilePicture={card.profilePicture}
             />
           ))}
         </section>

@@ -11,6 +11,7 @@ function Navbar1() {
   const auth = getAuth();
   const [user, loading] = useAuthState(auth);
   const [profileImage, setProfileImage] = useState(null); // Added state for profile image
+  const [showDropdown, setShowDropdown] = useState(false); // Added state for dropdown visibility
 
   const signIn = async () => {
     try {
@@ -39,6 +40,10 @@ function Navbar1() {
     }
   };
 
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
   return (
     <div
       className="main-header"
@@ -48,17 +53,43 @@ function Navbar1() {
         <img src={burger} alt="React Logo" />
         <div className="navigation">
           <ul>
-            <li>Home</li>
+            <li
+              onClick={() => {
+                window.location.href = "/";
+              }}
+            >
+              Home
+            </li>
+
             <li>Topics</li>
           </ul>
         </div>
-        {user ? (
-          <li onClick={signOut}>Sign out</li>
-        ) : (
-          <li onClick={signIn}>Log in</li>
-        )}
+        {user ? null : <li onClick={signIn}>Log in</li>}
+
         {user && (
-          <img src={profileImage} className="profilePicture" alt="Profile" />
+          <div className="profileContainer">
+            <img
+              src={profileImage}
+              className="profilePicture"
+              alt="Profile"
+              onClick={toggleDropdown}
+            />
+            {showDropdown && (
+              <div className="dropdown">
+                <ul>
+                  <li
+                    onClick={() => {
+                      window.location.href = "/settings";
+                    }}
+                  >
+                    Settings
+                  </li>
+
+                  <li onClick={signOut}>Sign out</li>
+                </ul>
+              </div>
+            )}
+          </div>
         )}
       </div>
       <div className="middle">
