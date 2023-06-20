@@ -10,7 +10,6 @@ function CreatePostModal({ isOpen, onClose, onSubmit }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCooldown, setIsCooldown] = useState(false);
   const [hashtag, setHashtag] = useState(""); // Add the hashtag state
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -67,7 +66,7 @@ function CreatePostModal({ isOpen, onClose, onSubmit }) {
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
-                    <div className="form-group">
+          <div className="form-group">
             <label>Hashtag</label>
             <input
               type="text"

@@ -37,7 +37,10 @@ function Settings() {
   const fetchUserPosts = async () => {
     try {
       const firestore = getFirestore();
-      const postsQuery = collection(firestore, "csharp_posts");
+      const postsQuery = query(
+        collection(firestore, "csharp_posts"),
+        where("userId", "==", user.uid)
+      );
       const collectionsSnapshot = await getDocs(postsQuery);
       const userPosts = collectionsSnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -53,11 +56,16 @@ function Settings() {
   const deletePost = async (postId) => {
     try {
       const firestore = getFirestore();
+      const postDocRef = doc(firestore, "csharp_posts", postId.toString());
+
       console.log("Deleting post", postId);
-      await deleteDoc(doc(firestore, "csharp_posts", postId.toString())); // Convert postId to string
+
+      await deleteDoc(postDocRef);
+
       setUserPosts((prevUserPosts) =>
         prevUserPosts.filter((post) => post.id !== postId)
       );
+
       setSuccessMessage("Post deleted successfully.");
     } catch (error) {
       console.log(error);

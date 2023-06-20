@@ -93,7 +93,7 @@ function PostDetail() {
 
   return (
     <main className="Community">
-      <Navbar isDetailed={true}/>
+      <Navbar isDetailed={true} pageName={pageName} />
       <section className="Forum">
         <div className="card" key={post.id}>
           <div className="header">
