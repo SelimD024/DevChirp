@@ -20,7 +20,7 @@ import PropTypes from "prop-types";
 function PostDetail() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
-  const pageName = location.pathname.substring(1); // Get the page name from the URL
+  const pageName = location.pathname.substring(1); 
 
   const handleLike = async (postId) => {
     const db = getFirestore();
@@ -65,7 +65,7 @@ function PostDetail() {
       const postQuery = query(
         postsRef,
         where("id", "==", parseInt(postId, 10))
-      ); // Parse postId into a number
+      ); 
 
       try {
         const querySnapshot = await getDocs(postQuery);
@@ -98,7 +98,7 @@ function PostDetail() {
         <div className="card" key={post.id}>
           <div className="header">
             <img
-              src={post.profilePicture || post.avatar} // Use profilePicture if available, otherwise use default avatar
+              src={post.profilePicture || post.avatar} 
               alt="Profile Picture"
               onClick={() => history.push("/")}
               className="Post_profilepicture"

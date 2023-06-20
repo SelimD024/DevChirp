@@ -18,7 +18,7 @@ import javascriptimage from "./assets/javascript.png";
 import javalogo from "./assets/javascriptlogo.png";
 import Post from "./components/Posts";
 
-const communityData = [
+export const communityData = [
   {
     name: "C#",
     members: "23,600",
