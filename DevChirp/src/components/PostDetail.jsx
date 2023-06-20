@@ -26,7 +26,7 @@ function PostDetail() {
     const db = getFirestore();
 
     try {
-      const postRef = doc(db, `${pageName}_posts/${postId}`);
+      const postRef = doc(db, `posts/${postId}`);
       const docSnap = await getDoc(postRef);
 
       if (!docSnap.exists()) {
@@ -60,7 +60,7 @@ function PostDetail() {
     const getPost = async () => {
       const db = getFirestore();
 
-      const pageName = "csharp_posts";
+      const pageName = "posts";
       const postsRef = collection(db, pageName);
       const postQuery = query(
         postsRef,

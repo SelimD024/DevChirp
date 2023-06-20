@@ -22,6 +22,8 @@ import {
   getDoc,
   increment,
   serverTimestamp,
+  query,
+  where,
 } from "firebase/firestore";
 
 import { getAuth } from "firebase/auth";
@@ -57,10 +59,14 @@ function CSharpCommunity() {
 
   useEffect(() => {
     const db = getFirestore();
-    const postRef = collection(db, `${pageName}_posts`); // Use the page name to construct the collection name
+    const postsRef = collection(db, "posts"); // Use the generic "posts" collection
 
+    const communityPostsQuery = query(
+      postsRef,
+      where("community", "==", pageName) // Filter posts based on the community
+    );
 
-    const unsubscribe = onSnapshot(postRef, (querySnapshot) => {
+    const unsubscribe = onSnapshot(communityPostsQuery, (querySnapshot) => {
       const posts = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
@@ -78,12 +84,13 @@ function CSharpCommunity() {
 
   const createPost = async (postData) => {
     const db = getFirestore();
-    const postRef = collection(db, `${pageName}_posts`);
+    const postsRef = collection(db, "posts"); // Use the generic "posts" collection
 
     try {
-      const docRef = await addDoc(postRef, {
+      const docRef = await addDoc(postsRef, {
         ...postData,
-        userId: user.uid, // Voeg het userId-veld toe aan de postgegevens
+        community: pageName, // Add the community field to the post data
+        userId: user.uid,
         likes: 0,
         likedBy: [],
         createdAt: serverTimestamp(),
@@ -95,7 +102,6 @@ function CSharpCommunity() {
       console.error("Fout bij het toevoegen van de post: ", error);
     }
   };
-
   const handleLike = async (postId) => {
     const db = getFirestore();
 
