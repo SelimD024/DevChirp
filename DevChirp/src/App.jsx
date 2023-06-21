@@ -44,6 +44,7 @@ function App() {
     const q = query(postsRef, orderBy("createdAt", "desc"), limit(10));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const postData = snapshot.docs.map((doc) => doc.data());
+      
       setPosts(postData);
     });
 
@@ -69,19 +70,24 @@ function App() {
             ))}
           </div>
         </div>
-        <div className="community-cards bg-black">
-          <h1> Show posts here</h1>
-          {posts.map((post) => (
-            <Post
-              key={post.id}
-              username={post.username}
-              daysAgo={post.daysAgo}
-              title={post.title}
-              description={post.description}
-              likes={post.likes}
-              comments={post.comments}
-            />
-          ))}
+        <div className="community-cards community-posts">
+          <h1>Trending Posts</h1>
+          <div className="inner Forum">
+            {posts.map((post) => (
+              <Post
+                key={post.id}
+                username={post.username}
+                daysAgo={post.daysAgo}
+                title={post.title}
+                description={post.description}
+                likes={post.likes}
+                comments={post.comments}
+                handleLike={post.handleLike}
+                hashtag={post.hashtag}
+                profilePicture={post.profilePicture}
+              />
+            ))}
+          </div>
         </div>
       </main>
     </>
