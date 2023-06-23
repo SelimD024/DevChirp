@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
+import PropTypes from "prop-types";
 
 function CreatePostModal({ isOpen, onClose, onSubmit }) {
   const [title, setTitle] = useState("");
@@ -8,6 +9,7 @@ function CreatePostModal({ isOpen, onClose, onSubmit }) {
   const [user] = useAuthState(getAuth());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCooldown, setIsCooldown] = useState(false);
+  const [hashtag, setHashtag] = useState(""); // Add the hashtag state
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,9 +20,11 @@ function CreatePostModal({ isOpen, onClose, onSubmit }) {
         title,
         username: user.displayName,
         description,
+        hashtag,
       });
       setTitle("");
       setDescription("");
+      setHashtag("");
     }
   };
 
@@ -62,6 +66,14 @@ function CreatePostModal({ isOpen, onClose, onSubmit }) {
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
+          <div className="form-group">
+            <label>Hashtag</label>
+            <input
+              type="text"
+              value={hashtag}
+              onChange={(e) => setHashtag(e.target.value)}
+            />
+          </div>
           <div className="modal-actions">
             <button
               type="submit"
@@ -79,5 +91,11 @@ function CreatePostModal({ isOpen, onClose, onSubmit }) {
     </div>
   );
 }
+
+CreatePostModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default CreatePostModal;

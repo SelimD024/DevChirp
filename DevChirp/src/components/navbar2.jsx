@@ -6,11 +6,16 @@ import Hash from "../assets/hash.svg";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-function Navbar({ pageName }) {
+function Navbar({ pageName, isDetailed }) {
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
   const [user] = useAuthState(auth);
-  const [profileImage, setProfileImage] = useState(null); // Added state for profile image
+  const [profileImage, setProfileImage] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
   const signIn = async () => {
     try {
@@ -46,27 +51,53 @@ function Navbar({ pageName }) {
         <div className="navigation">
           <ul>
             <li>
-              <b>{pageName}</b>
+              <b
+                onClick={() => {
+                  window.location.href = "/";
+                }}
+              >
+                {pageName}
+              </b>
             </li>
           </ul>
         </div>
-        {user ? (
-          <li onClick={signOut}>Sign out</li>
-        ) : (
-          <li onClick={signIn}>Log in</li>
-        )}
+        {user ? null : <li onClick={signIn}>Log in</li>}
+
         {user && (
-          <img src={profileImage} className="profilePicture" alt="Profile" />
+          <div className="profileContainer">
+            <img
+              src={profileImage}
+              className="profilePicture"
+              alt="Profile"
+              onClick={toggleDropdown}
+            />
+            {showDropdown && (
+              <div className="dropdown">
+                <ul>
+                  <li
+                    onClick={() => {
+                      window.location.href = "/settings";
+                    }}
+                  >
+                    Settings
+                  </li>
+                  <li onClick={signOut}>Sign out</li>
+                </ul>
+              </div>
+            )}
+          </div>
         )}
       </div>
-      <div className="middle">
-        <div className={`Navigation ${pageName === "Home" ? "active" : ""}`}>
-          <img src={Navlogo} alt="React Logo" />
+      {isDetailed ? null : (
+        <div className="middle">
+          <div className={`Navigation ${pageName === "Home" ? "active" : ""}`}>
+            <img src={Navlogo} alt="React Logo" />
+          </div>
+          <div className={`Navigation ${pageName === "Hash" ? "active" : ""}`}>
+            <img src={Hash} alt="React Logo" />
+          </div>
         </div>
-        <div className={`Navigation ${pageName === "Hash" ? "active" : ""}`}>
-          <img src={Hash} alt="React Logo" />
-        </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,14 @@
+// app page
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getFirestore, collection, onSnapshot, query, orderBy, limit } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 import Navbar1 from "./components/navbar1";
 import CommunityCard from "./components/CommunityCard";
 import "./App.css";
@@ -8,8 +16,9 @@ import cardimage from "./assets/cardimage.png";
 import Clogo from "./assets/Clogo.png";
 import javascriptimage from "./assets/javascript.png";
 import javalogo from "./assets/javascriptlogo.png";
+import Post from "./components/Posts";
 
-const communityData = [
+export const communityData = [
   {
     name: "C#",
     members: "23,600",
@@ -27,30 +36,19 @@ const communityData = [
 ];
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [trendingPosts, setTrendingPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const db = getFirestore();
-    const trendingPostsRef = collection(db, "trending_posts");
-
-    const q = query(
-      trendingPostsRef,
-      orderBy("likes", "desc"),
-      limit(5)
-    );
-
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const posts = [];
-      querySnapshot.forEach((doc) => {
-        posts.push({ id: doc.id, ...doc.data() });
-      });
-      setTrendingPosts(posts);
+    const postsRef = collection(db, "posts");
+    const q = query(postsRef, orderBy("createdAt", "desc"), limit(10));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const postData = snapshot.docs.map((doc) => doc.data());
+      
+      setPosts(postData);
     });
 
-    return () => {
-      unsubscribe();
-    };
+    return unsubscribe;
   }, []);
 
   return (
@@ -72,15 +70,24 @@ function App() {
             ))}
           </div>
         </div>
-        <div className="community-cards bg-black">
-          <h1>Trending posts</h1>
-          {trendingPosts.map((post) => (
-            <div key={post.id}>
-              <h2>{post.title}</h2>
-              <p>{post.content}</p>
-              {/* Voeg hier de rest van de weergave van de post toe */}
-            </div>
-          ))}
+        <div className="community-cards community-posts">
+          <h1>Trending Posts</h1>
+          <div className="inner Forum">
+            {posts.map((post) => (
+              <Post
+                key={post.id}
+                username={post.username}
+                daysAgo={post.daysAgo}
+                title={post.title}
+                description={post.description}
+                likes={post.likes}
+                comments={post.comments}
+                handleLike={post.handleLike}
+                hashtag={post.hashtag}
+                profilePicture={post.profilePicture}
+              />
+            ))}
+          </div>
         </div>
       </main>
     </>

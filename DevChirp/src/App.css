@@ -14,10 +14,19 @@ body {
   background-color: #dfe7ef;
 }
 
+a,
+a:hover,
+a:visited,
+a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
 .main-header {
   color: white;
   position: relative;
   background-color: white;
+  z-index: 2;
 }
 
 .main-header .top {
@@ -35,6 +44,47 @@ body {
 .Community .main-header .top {
   border-bottom: 1px solid #dfe7ef;
   gap: 8px;
+  position: relative;
+}
+
+.community-cards.community-posts .inner {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 1%;
+  padding: 0px;
+}
+
+
+.main-header .top .profileContainer {
+  position: relative;
+}
+
+.main-header .top .dropdown {
+  left: -15px;
+  position: absolute;
+  background: #dfe7ef;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  border-radius: 5px;
+}
+
+.main-header .top .dropdown ul li:hover {
+  color: black;
+}
+
+.index .main-header .dropdown {
+  background-color: #9f66e9;
+}
+
+.main-header .top .dropdown ul {
+  display: grid;
+  gap: 15px;
+}
+
+.settings.index .bottom,
+.settings.index .middle {
+  display: none;
 }
 
 .Community .main-header .top .Hamburger {
@@ -105,7 +155,12 @@ body {
 
 .community-cards {
   padding: 24px 10px;
-  background-color: white;
+  background-color: #F6F7F8;
+}
+
+.tags {
+  padding: 2px 8px;
+  background-color: #e1f9f2;
 }
 
 .community-cards .cards {
@@ -120,6 +175,7 @@ body {
   box-shadow: 0px 3px 6px rgba(110, 116, 134, 0.24);
   border-radius: 8px;
   transition: all 0.2s ease-in-out;
+  background-color: white;
 }
 
 .community-cards .cards .card:hover {
@@ -186,11 +242,25 @@ body {
 .Forum .card .footer {
   padding: 10px 5%;
   display: flex;
-  gap: 2%;
+  justify-content: space-between;
 }
 
 .Forum .card .footer .inner {
   display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.Forum .card .footer .inner .likes,
+.Forum .card .footer .inner .comments {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.Post_profilepicture {
+  border-radius: 60px;
+  max-width: 40px;
 }
 
 .login-form {
@@ -252,6 +322,55 @@ body {
   gap: 2%;
 }
 
+.settings-content {
+  max-width: 100vw;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+.settings-content h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.settings-form label {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.settings-form {
+  display: grid;
+}
+
+.settings-form input {
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  border: none;
+  width: 95%;
+  margin-bottom: 15px;
+}
+
+.success-message,
+.error-message {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.success-message {
+  color: #28a745;
+}
+
+.error-message {
+  color: #dc3545;
+}
+
 @media (min-width: 568px) {
   .community-cards {
     padding: 24px 47px;
@@ -271,6 +390,10 @@ body {
 @media (min-width: 768px) {
   .community-cards {
     padding: 24px 67px;
+  }
+
+  .community-cards.community-posts .inner {
+    grid-template-columns: auto auto;
   }
 }
 
